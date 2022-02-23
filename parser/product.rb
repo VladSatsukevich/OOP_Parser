@@ -1,6 +1,6 @@
 require 'csv'
 
-class CSV_class
+class Product
 
   attr_accessor :file_name, :name, :price, :image
   
