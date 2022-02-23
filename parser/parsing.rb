@@ -1,11 +1,9 @@
 require 'thread'
 
-require_relative 'product'
-require_relative 'csv_modules'
+require_relative 'csv_class'
 require_relative 'utils'
 
 include Utils
-include CSV_modules
 
 module Parsing
 
@@ -19,8 +17,8 @@ module Parsing
         variations.each do |variation|
           price = variation.xpath(@parameters['price_xpath'])
           weigth = variation.xpath(@parameters['weigth_xpath'])
-          Product.new(name, price, image)
-          CSV_modules.csv_add(file_name, "#{name} - #{weigth}", price, image)
+          CSV_class.new(file_name, name, price, image)
+          CSV_class.csv_add(file_name, "#{name} - #{weigth}", price, image)
         end
     end
 
@@ -36,7 +34,7 @@ module Parsing
 
     def self.page_parsing(file_name, inputted_page)
         downloaded_page = Utils.get_page(inputted_page)
-        parsed_product_url = downloaded_page.xpath(@parameters['number_of_products_xpath'])
+        parsed_product_url = downloaded_page.xpath(@parameters['parsed_product_url_xpath'])
         parsed_url_list = parsed_product_url.to_s.split(/.html/)
         puts "Start parsing products page:"
         threads = []
