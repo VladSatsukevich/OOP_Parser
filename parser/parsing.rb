@@ -9,23 +9,24 @@ include CSV_modules
 
 module Parsing
 
+  @parameters = YAML.load_file('parameters.yaml')
+
     def self.product_parsing(file_name, url)
         downloaded_page = Utils.get_page(url + '.html')
-        name  = downloaded_page.xpath('//h1[@class = "product_main_name"]/text()')
-        image = downloaded_page.xpath('//img[@class = "replace-2x img-responsive"]/@src')
-        variations = downloaded_page.xpath('//div[contains(@class, "attribute_list")]/ul/li')
+        name  = downloaded_page.xpath(@parameters['name_xpath'])
+        image = downloaded_page.xpath(@parameters['image_xpath'])
+        variations = downloaded_page.xpath(@parameters['variations_xpath'])
         variations.each do |variation|
-          price = variation.xpath('.//span[@class = "price_comb"]/text()')
-          weigth = variation.xpath('.//span[@class = "radio_label"]/text()')
+          price = variation.xpath(@parameters['price_xpath'])
+          weigth = variation.xpath(@parameters['weigth_xpath'])
           Product.new(name, price, image)
           CSV_modules.csv_add(file_name, "#{name} - #{weigth}", price, image)
         end
     end
 
     def self.parse_category(file_name, category)
-        parameters = YAML.load_file('parameters.yaml')
-        number_of_products = Utils.get_page(category).xpath('//input[@id="nb_item_bottom"]/@value').text.to_i
-        number_of_pages = (number_of_products / parameters['page_number']).ceil
+        number_of_products = Utils.get_page(category).xpath(@parameters['number_of_products_xpath']).text.to_i
+        number_of_pages = (number_of_products / @parameters['page_number']).ceil
         page_parsing(file_name, category)
         (2..number_of_pages).each do |page_number|
           result = category + "?p=#{page_number}"
@@ -35,7 +36,7 @@ module Parsing
 
     def self.page_parsing(file_name, inputted_page)
         downloaded_page = Utils.get_page(inputted_page)
-        parsed_product_url = downloaded_page.xpath("//*[@class = 'product_img_link pro_img_hover_scale product-list-category-img']/@href")
+        parsed_product_url = downloaded_page.xpath(@parameters['number_of_products_xpath'])
         parsed_url_list = parsed_product_url.to_s.split(/.html/)
         puts "Start parsing products page:"
         threads = []
