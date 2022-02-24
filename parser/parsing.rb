@@ -18,6 +18,7 @@ module Parsing
         variations.each do |variation|
           price = variation.xpath(@parameters['price_xpath'])
           weigth = variation.xpath(@parameters['weigth_xpath'])
+          Csv_modules.new(save)
           Csv_modules.csv_add(file_name, "#{name} - #{weigth}", price, image)
         end
     end
