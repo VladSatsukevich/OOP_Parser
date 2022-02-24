@@ -1,8 +1,11 @@
 require 'yaml'
 
-require_relative 'product'
-require_relative 'parsing'
+require_relative 'product_parsing'
+require_relative 'page_parsing'
+require_relative 'csv_modules'
+
+include CSV_modules
 
 parameters = YAML.load_file('parameters.yaml')
-Product.csv_create(parameters['file'])
-Parsing.parse_category(parameters['file'], parameters['link'])
+CSV_modules.csv_create(parameters['file'])
+Page_parsing.parse_category(parameters['file'], parameters['link'])
