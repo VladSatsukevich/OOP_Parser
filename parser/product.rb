@@ -10,15 +10,17 @@ class Product
       @image = image
     end
 
-    def self.csv_create (file_name)
-      puts "File #{file_name} was created!"
-      CSV.open(file_name + ".csv", 'w') do |csv| csv << ["Name", "Price", "Image"] 
+    private
+      def self.csv_create (file_name)
+        puts "File #{file_name} was created!"
+        CSV.open(file_name + ".csv", 'w') do |csv| csv << ["Name", "Price", "Image"] 
+        end
       end
-    end
-
-    def self.csv_add(file_name, name, price, image)
-      CSV.open(file_name + ".csv", 'a') do |csv| csv << [name, price, image] 
+  
+    private
+      def self.csv_add(file_name, name, price, image)
+        CSV.open(file_name + ".csv", 'a') do |csv| csv << [name, price, image] 
+        end
       end
-    end
 end
 
