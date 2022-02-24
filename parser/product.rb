@@ -12,7 +12,7 @@ class Product
     end
 
     protected
-    def save
+    def self.save
       Csv_modules.new(name, price, image).csv_add
     end
 end
