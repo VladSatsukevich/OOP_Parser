@@ -1,3 +1,5 @@
+require_relative 'csv_modules'
+
 class Product
 
   attr_accessor :name, :price, :image
@@ -6,11 +8,14 @@ class Product
     @name = name
     @price = price
     @image = image
+  
   end
-
+  
   private
-  def self.save (file_name, name, price, image)
-    CSV.open(file_name + ".csv", 'a') do |csv| csv << [name, price, image] end
+  def self.save 
+    Csv_modules.csv_add(name, price, image)
   end
+  
 end
+
 
