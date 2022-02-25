@@ -1,6 +1,7 @@
 require 'thread'
 
 require_relative 'product'
+require_relative 'csv_modules'
 require_relative 'utils'
 
 include Utils
@@ -17,7 +18,8 @@ module Parsing
         variations.each do |variation|
           price = variation.xpath(@parameters['price_xpath'])
           weigth = variation.xpath(@parameters['weigth_xpath'])
-          Product.save(file_name, "#{name} - #{weigth}", price, image)
+          Product.save
+          #Csv_modules.csv_add(file_name, "#{name} - #{weigth}", price, image)
         end
     end
 
